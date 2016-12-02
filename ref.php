@@ -1967,12 +1967,16 @@ class ref{
             $paramValue = $parameter->isDefaultValueAvailable() ? $parameter->getDefaultValue() : null;            
             $this->fmt->sep(' = ');
 
-            if(static::$env['is546'] && !$parameter->getDeclaringFunction()->isInternal() && $parameter->isDefaultValueConstant()){
-              $this->fmt->text('constant', $parameter->getDefaultValueConstantName(), 'Constant');
+            try{
+              if(static::$env['is546'] && !$parameter->getDeclaringFunction()->isInternal() && $parameter->isDefaultValueConstant()){
+                $this->fmt->text('constant', $parameter->getDefaultValueConstantName(), 'Constant');
 
-            }else{
-              $this->evaluate($paramValue, true);
-            }  
+              }else{
+                $this->evaluate($paramValue, true);
+              }  
+            }catch(\Exception $e){
+              // nop
+            }
           }
 
           $this->fmt->endContain();
